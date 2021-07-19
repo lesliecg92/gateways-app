@@ -1,0 +1,38 @@
+<dx-data-grid id="gridContainer" [dataSource]="gatewaysDataSource" keyExpr="id"
+  [showBorders]="true" (onRowUpdating)="masterRowUpdating($event)">
+
+  <dxo-paging [pageSize]="15"></dxo-paging>
+  <dxo-editing mode="popup" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true">
+  </dxo-editing>
+  <dxi-column dataField="serialNumber">
+    <dxi-validation-rule type="required"></dxi-validation-rule>
+  </dxi-column>
+  <dxi-column dataField="name">
+    <dxi-validation-rule type="required"></dxi-validation-rule>
+  </dxi-column>
+  <dxi-column dataField="ipAddress">
+    <dxi-validation-rule type="required"></dxi-validation-rule>
+  </dxi-column>
+  <dxo-master-detail [enabled]="true" template="masterDetail"></dxo-master-detail>
+
+  <div *dxTemplate="let gateway of 'masterDetail'">
+    <dx-data-grid id="gridContainerDetails" [dataSource]="devicesDataSource[gateway.data.id]"  keyExpr="id" [showBorders]="true"
+    (onRowUpdating)="detailRowUpdating($event)">
+      <dxo-editing mode="popup" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true"></dxo-editing>
+      <dxi-column dataField="uid" dataType="number">
+        <dxi-validation-rule type="required"></dxi-validation-rule>
+      </dxi-column>
+      <dxi-column dataField="vendor">
+        <dxi-validation-rule type="required"></dxi-validation-rule>
+      </dxi-column>
+      <dxi-column dataField="dateCreated" dataType="date">
+        <dxi-validation-rule type="required"></dxi-validation-rule>
+      </dxi-column>
+      <dxi-column dataField="status">
+        <dxi-validation-rule type="required"></dxi-validation-rule>
+        <dxo-lookup [dataSource]="statuses" displayExpr="value" valueExpr="id">
+        </dxo-lookup>
+      </dxi-column>
+    </dx-data-grid>
+  </div>
+</dx-data-grid>
